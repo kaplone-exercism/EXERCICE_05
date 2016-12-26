@@ -17,8 +17,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import models.Sauvegarde;
 import models.Settings;
+import models.Statiques;
 
-public class ControlleurSettings implements Initializable {
+public class ControleurSettings implements Initializable {
 	
 	@FXML
 	ColorPicker colorPicker;
@@ -40,14 +41,15 @@ public class ControlleurSettings implements Initializable {
 	CheckBox AffInfosMur;
 	
 	Stage stage;
-	Main_Exercice_04 main;
+	Main_Exercice_05 main;
 	
 	
 	
-	public Scene init(AnchorPane root, Main_Exercice_04 main_Exercice_04) {
+	public Scene init() {
 		
-		main = main_Exercice_04;
-		stage = (Stage) root.getScene().getWindow();
+		AnchorPane root =Statiques.getRoot();
+        main = Statiques.getMain();
+		stage = Statiques.getStage();
 		
 		Scene scene = new Scene((Parent) JfxUtils.loadFxml("settings.fxml"), 800, 500);
 		
@@ -70,7 +72,7 @@ public class ControlleurSettings implements Initializable {
 					                                .filter(v -> ((Rectangle)v).getWidth() >= 1000 && ((Rectangle)v).getHeight() >= 600)
 					                                .findFirst();
 			optFond.ifPresent(o -> ((Rectangle)o).setFill(Settings.getCouleurFond()));
-			main.retourPartie(scene);
+			main.retourPartie();
 		});
 		versPartie.setDisable(Sauvegarde.getNiveau() == null);
 

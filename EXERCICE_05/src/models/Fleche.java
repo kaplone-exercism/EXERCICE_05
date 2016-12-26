@@ -1,10 +1,6 @@
 package models;
 
 import enums.Sens;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableDoubleValue;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -14,7 +10,6 @@ public class Fleche extends ImageView{
 	private boolean out;
 	
 	private Image image;
-	private String url;
 	
 	private Personnage2D perso;
 

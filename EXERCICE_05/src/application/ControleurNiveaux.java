@@ -4,29 +4,25 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import enums.Orientation;
 import enums.Sens;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -35,32 +31,35 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.Fleche;
 import models.Goal2D;
 import models.Mur2D;
 import models.Niveau;
 import models.Personnage2D;
+import models.Sauvegarde;
 import models.Settings;
+import models.Statiques;
 import models.Temps;
+import utils.TickTimer;
 
-public class ControlleurNiveaux implements Initializable{
+public class ControleurNiveaux{
 	
 	String home =  System.getProperty("user.home");
 	File settings_file = new File(home, "shapesinthemazes_niveaux.txt");
 	
-	Controlleur ct;
-	
-	private static Image im;
+	Controleur ct;
+
 	private static ImageView imv;
 	
 	private Runnable chrono;
-	private HBox temps;
 	
-	private Niveau niveau;
+	private static Timer timer;
 	
-	public AnchorPane init(AnchorPane root, Main_Exercice_04 main_Exercice_04) {
+	public AnchorPane init() {
+		
+		AnchorPane root = Statiques.getRoot();
+        Main_Exercice_05 main = Statiques.getMain();
 
 		final Scene scene = root.getScene();
 		
@@ -79,7 +78,6 @@ public class ControlleurNiveaux implements Initializable{
         AnchorPane fullGame = null;
         Goal2D goal = null;
         Niveau niveau = new Niveau();
-        temps = null;
         final Map<AnchorPane, Niveau> tableauDesNiveaux = new HashMap<>();
     	
 		try {
@@ -105,16 +103,13 @@ public class ControlleurNiveaux implements Initializable{
 	    				tableauDesNiveaux.put(preview, niveau);
 	    				
 	    				preview.setOnMouseClicked(b -> selectionneNiveau(b,
-	    	                    tableauDesNiveaux, 
-	    	                    root, 
-	    	                    scene,
-	    	                    main_Exercice_04));
+	    	                    tableauDesNiveaux));
 	    				
 	    			}
 	    			
 	    			niveau = new Niveau();
     			
-	    			ct = new Controlleur();
+	    			ct = new Controleur();
 
 	    			hb = new HBox();
 	    			hb.setPadding(new Insets(20));
@@ -200,6 +195,8 @@ public class ControlleurNiveaux implements Initializable{
 	    		s = br.readLine();
 	    	}
 	    	
+	    	br.close();
+	    	
 	    	hb.getChildren().add(preview);
 			vb.getChildren().add(hb);
 			niveau.setFullGame(fullGame);
@@ -207,26 +204,23 @@ public class ControlleurNiveaux implements Initializable{
 			tableauDesNiveaux.put(preview, niveau);
 			
 			preview.setOnMouseClicked(b -> selectionneNiveau(b,
-                    tableauDesNiveaux, 
-                    root, 
-                    scene,
-                    main_Exercice_04));
+                    tableauDesNiveaux));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		sc.setContent(vb);
 		root.getChildren().add(sc);
 		return root;
 	}
 	
 	public void selectionneNiveau(MouseEvent me,
-			                 Map<AnchorPane,Niveau> tableauDesNiveaux,
-			                 AnchorPane root,
-			                 Scene scene,
-			                 Main_Exercice_04 main_Exercice_04){
+			                 Map<AnchorPane,Niveau> tableauDesNiveaux){
+		
+		AnchorPane root = Statiques.getRoot();
+        Scene scene = Statiques.getScene();
+        Main_Exercice_05 main = Statiques.getMain();
 		
 		Niveau niveau = tableauDesNiveaux.get(me.getSource());
 		AnchorPane root_ = niveau.getFullGame();
@@ -243,6 +237,11 @@ public class ControlleurNiveaux implements Initializable{
 		root_.getChildren().addAll(fb, fh, fd, fg, g0);
 		
 		r0.toFront();
+		fb.toFront();
+		fh.toFront();
+		fd.toFront();
+		fg.toFront(); 
+		g0.toFront();
 		r0.cacherLesFleches();
 
 		scene.setRoot(root_);
@@ -250,22 +249,23 @@ public class ControlleurNiveaux implements Initializable{
 		
 		stagePrincipal.setWidth(1005);
 		stagePrincipal.setHeight(635);
-
-		root.setOnMouseClicked(e -> main_Exercice_04.gerer_clicks(r0, e));
-		scene.setOnKeyPressed(e1 -> main_Exercice_04.gerer_keys(e1, root_, stagePrincipal, niveau));
+		
+		Sauvegarde.setNiveau(niveau);
+		
+		TickTimer.nouveauTimer();
 	
 		for (Mur2D mur : niveau.getListeDesMurs()){
 			mur.setOnMouseEntered(c -> {
 				if (c.isAltDown())
-				main_Exercice_04.afficheInfos(root_, mur, c, true);
+				main.afficheInfos(mur, c, true);
 			});
 			mur.setOnMouseExited(d -> {
-				main_Exercice_04.afficheInfos(root_, mur, d, false);
+				main.afficheInfos(mur, d, false);
 			});
 		}
 		
 		scene.setOnMouseMoved(e -> {
-				main_Exercice_04.gerer_sourisBouge(e, root_, !e.isAltDown());
+				ControleurSouris.gerer_sourisBouge(e, !e.isAltDown());
 		});
 	}
 	
@@ -275,8 +275,6 @@ public class ControlleurNiveaux implements Initializable{
             protected Object call() throws Exception {
             	
             	updateMessage("00:00.00");
-            	
-            	Temps horloge = new Temps(5, 4, 14, 24, 3, 7);
             	
             	LocalDateTime debut = LocalDateTime.now();
 
@@ -315,17 +313,15 @@ public class ControlleurNiveaux implements Initializable{
 		imv.setImage(new Image(im));
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public Runnable getChrono() {
 		return chrono;
 	}
 
 	public void setChrono(Runnable chrono) {
 		this.chrono = chrono;
+	}
+
+	public static Timer getTimer() {
+		return timer;
 	}
 }

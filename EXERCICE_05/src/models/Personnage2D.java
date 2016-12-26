@@ -309,14 +309,14 @@ public class Personnage2D extends Rectangle {
     		for (Fleche f : fleches.values()){
     			f.setOut(false);
         		f.setVisible(true);
-        		f.toFront();
+        		//f.toFront();
         	}
     	}
     	else {
     		for (Fleche f : fleches.values()){
     			f.setOut(true);
         		f.setVisible(true);
-        		f.toFront();
+        		//f.toFront();
         	}
     	}
     }

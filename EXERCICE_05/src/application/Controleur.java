@@ -4,12 +4,12 @@ import javafx.scene.paint.Color;
 import models.Niveau;
 import models.Personnage2D;
 
-public class Controlleur {
+public class Controleur {
 	
 	private Personnage2D perso;
 	
 
-	public Controlleur(){
+	public Controleur(){
 	}
 	
 	public Personnage2D init(int x, int y, int width, int height, Color couleur, Niveau niveau){

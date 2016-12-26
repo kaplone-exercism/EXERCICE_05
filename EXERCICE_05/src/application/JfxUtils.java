@@ -11,7 +11,7 @@ public class JfxUtils {
         FXMLLoader loader = new FXMLLoader();
         try {
             loader.setLocation(JfxUtils.class.getResource(fxml));
-            Node root = (Node) loader.load(Main_Exercice_04.class.getResource(fxml).openStream());
+            Node root = (Node) loader.load(Main_Exercice_05.class.getResource(fxml).openStream());
             return root;
         } catch (IOException e) {
             throw new IllegalStateException("cannot load FXML screen", e);
