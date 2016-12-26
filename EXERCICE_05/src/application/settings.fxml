@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControlleurSettings">
+   <children>
+      <VBox prefHeight="449.0" prefWidth="643.0" spacing="20.0">
+         <children>
+            <VBox prefHeight="80.0" prefWidth="623.0" spacing="10.0">
+               <children>
+                  <Label text="Options de jeu :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <CheckBox fx:id="changeOnContact" mnemonicParsing="false" text="Change de couleur si contact avec un mur">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </CheckBox>
+                  <CheckBox fx:id="moveOnContact" mnemonicParsing="false" text="Revient au début si contact avec un mur">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </CheckBox>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox prefHeight="101.0" prefWidth="571.0" spacing="10.0">
+               <children>
+                  <Label text="Options d'affichage :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="560.0">
+                     <children>
+                        <Label text="Couleur des murs :          " />
+                        <ColorPicker fx:id="colorPicker" minHeight="-Infinity" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="560.0">
+                     <children>
+                        <Label text="Couleur du personnage : " />
+                        <ColorPicker fx:id="colorPicker1" minHeight="-Infinity" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="560.0">
+                     <children>
+                        <Label text="Couleur du fond :            " />
+                        <ColorPicker fx:id="colorPicker2" minHeight="-Infinity" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox prefHeight="100.0" prefWidth="623.0" spacing="10.0">
+               <children>
+                  <Label text="Options d'édition :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <CheckBox fx:id="affCoordSouris" mnemonicParsing="false" text="Afficher les coordonnées de la souris">
+                     <VBox.margin>
+                        <Insets left="20.0" top="20.0" />
+                     </VBox.margin>
+                  </CheckBox>
+                  <CheckBox fx:id="AffInfosMur" mnemonicParsing="false" text="Afficher les infos sur les murs">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </CheckBox>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

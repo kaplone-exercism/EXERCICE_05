@@ -1,0 +1,58 @@
+# Orientation # epaisseur # position # debut # fin
+
+[Practice 1]
+Goal = 900, 300
+
+Infos = "Avec les flèches du clavier ou avec les touches ZQSD, faire passer le rectangle par la porte pour aller toucher le drapeau"; 500; 300; 300
+
+Mur = VERTICAL,    5,       0,        	0,   600
+Mur = VERTICAL,    5,     995,        	0,   600
+Mur = HORIZONTAL,  5,       0,        	0,  1000
+Mur = HORIZONTAL,  5,     595,        	0,  1000
+
+Mur = VERTICAL,   15,     350,          0,   250
+Mur = VERTICAL,   15,     350,        300,   600
+
+Perso = GREY, 10, 10, 100, 50
+
+
+[Practice 2]
+Goal = 900, 300
+
+Infos = "Pour changer la forme du rectangle, il faut appuyer sur 'CONTROLE' + une flèche pour sortir un coté, ou 'CONTROLE' + 'MAJ' + flèche pour le rentrer."; 500; 300; 300
+
+Mur = VERTICAL,    5,       0,        	0,   600
+Mur = VERTICAL,    5,     995,        	0,   600
+Mur = HORIZONTAL,  5,       0,        	0,  1000
+Mur = HORIZONTAL,  5,     595,        	0,  1000
+	
+Mur = VERTICAL,   15,     350,         0,    250
+Mur = VERTICAL,   15,     350,        300,   600
+
+Perso = MAROON, 5, 5, 70, 70
+
+[Practice 3]
+Goal = 900, 300
+
+Infos = "Tous les chemins ne se valent pas ..."; 500; 300; 300
+
+Mur = VERTICAL,    5,       0,        	0,   600
+Mur = VERTICAL,    5,     995,        	0,   600
+Mur = HORIZONTAL,  5,       0,        	0,  1000
+Mur = HORIZONTAL,  5,     595,        	0,  1000
+	
+Mur = VERTICAL,   15,     350,          0,    60
+Mur = VERTICAL,   15,     350,        100,   500
+Mur = VERTICAL,   15,     350,        570,   600
+
+Mur = VERTICAL,   15,     420,          0,   70
+Mur = VERTICAL,   15,     460,         70,   140
+Mur = VERTICAL,   15,     460,        180,   230
+Mur = VERTICAL,   15,     420,        230,   600
+
+Mur = HORIZONTAL, 15,      70,        420,   475
+Mur = HORIZONTAL, 15,     230,        420,   475
+
+Perso = MAROON, 5, 5, 80, 40
+
+
