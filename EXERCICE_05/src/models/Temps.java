@@ -1,22 +1,10 @@
 package models;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalField;
-import java.util.Observable;
-
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.*;
-import javafx.collections.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.beans.binding.*;
-import javafx.beans.property.*;
-
 
 public class Temps {
 	

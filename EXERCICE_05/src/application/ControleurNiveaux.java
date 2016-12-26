@@ -53,7 +53,7 @@ public class ControleurNiveaux{
 	private static ImageView imv;
 	
 	private Runnable chrono;
-	
+	private Duration duree;
 	private static Timer timer;
 	
 	public AnchorPane init() {
@@ -251,7 +251,7 @@ public class ControleurNiveaux{
 		stagePrincipal.setHeight(635);
 		
 		Sauvegarde.setNiveau(niveau);
-		
+
 		TickTimer.nouveauTimer();
 	
 		for (Mur2D mur : niveau.getListeDesMurs()){
@@ -281,14 +281,14 @@ public class ControleurNiveaux{
             	boolean boucle = true;
             	while (boucle){
             			
-            		Thread.sleep(10);     
-            		Duration duree = Duration.between(debut, LocalDateTime.now());
+            		Thread.sleep(100);     
+            		duree = Duration.between(debut, LocalDateTime.now());
             		
             		long secondes = duree.getSeconds() % 60;
             		long minutes = duree.getSeconds() / 60;
-            		long dixiemes = ((duree.getNano() / 1000000) % 1000) / 10;
+            		long dixiemes = ((duree.getNano() / 1000000) % 1000) / 100;
 
-                    updateMessage(String.format("%02d:%02d.%02d", minutes, secondes, dixiemes));
+                    updateMessage(String.format("%02d:%02d.%d", minutes, secondes, dixiemes));
                     
                     
                 }

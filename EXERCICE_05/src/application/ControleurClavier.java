@@ -1,9 +1,8 @@
 package application;
 
-import java.util.Optional;
-
 import enums.Sens;
-import javafx.event.Event;
+import javafx.animation.Timeline;
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -22,65 +21,92 @@ public class ControleurClavier {
 	
 	private static Double deltaChange = 0.999;
 	
-	private static Optional<KeyEvent> e = Optional.empty();
+	static final long repereTemporel = 25;
+	static long ralentissement = repereTemporel;
 	
-	static public void gerer_keys(Niveau niveau){
+	static final Timeline timeline = new Timeline();
+	private static boolean tickable = false;
+	private static boolean moveable = false;
+	
+	private static AnchorPane root;
+	private static Scene scene;
+	private static Main_Exercice_05 main;
+	private static Stage stage;
+	private static Personnage2D perso;
+	private static Goal2D goal2D;
+	private static Niveau niveau;
+	private static KeyEvent e;
+	
+	static public void init(Niveau niveau_){
 		
-		AnchorPane root = Statiques.getRoot();
-        Scene scene = Statiques.getScene();
-        Main_Exercice_05 main = Statiques.getMain();
-        Stage stage = Statiques.getStage();
+		niveau = niveau_;
 		
-		Personnage2D perso = niveau.getPerso();
-		Goal2D goal2D = niveau.getGoal2D();
+		root = Statiques.getRoot();
+        scene = Statiques.getScene();
+        main = Statiques.getMain();
+        stage = Statiques.getStage();
 		
-		if (niveau.getChronoThread() == null){
-			
-			niveau.getHorloge().getH11c1().textProperty().unbind();
-			niveau.getHorloge().getH11c1().textProperty().bind(niveau.getChronoTask().messageProperty());
-			
-			Thread t = new Thread(niveau.getChronoTask());
-			niveau.setChronoThread(t);
-			t.start();
-			
-			stage.setOnCloseRequest(a -> niveau.getChronoTask().cancel());	
-		}
+		perso = niveau.getPerso();
+		goal2D = niveau.getGoal2D();
 		
-        if (perso.getRectangle2D().intersects(goal2D.getRectangle2D())){
-			
-        	goal2D.setImage(new Image("goal_vert.png"));
-			
-        	main.inactive();
-        	main.afficherSores();
-		}
+		niveau.getHorloge().getH11c1().textProperty().unbind();
+		niveau.getHorloge().getH11c1().textProperty().bind(niveau.getChronoTask().messageProperty());
 		
-		scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<Event>() {
+		Thread t = new Thread(niveau.getChronoTask());
+		niveau.setChronoThread(t);
+		t.start();
+		
+		stage.setOnCloseRequest(a -> niveau.getChronoTask().cancel());
+
+		scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			
 			@Override
-			public void handle(Event event) {	
-				e = Optional.of((KeyEvent) event);
-				}
+			public void handle(KeyEvent e_) {
+				moveable = true;
+				e = e_;
+			}
 
 		});
 		
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<Event>() {
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
 			
 			@Override
-			public void handle(Event event) {	
-				e = Optional.empty();
+			public void handle(KeyEvent e) {	
+				e = null;
+				tickable = false;
+				moveable = false;
+				ralentissement = repereTemporel;
 				}
 
 		});
+	}
+	
+	static public void gerer_keys(){
 		
-		if (e.isPresent()){
-
-			KeyCode kc = e.get().getCode();
+		if(moveable){
+			if (ralentissement > 14){
+				tickable = ralentissement % 5 == 0;
+			}
+			else if (ralentissement > 7){
+				tickable = ralentissement % 2 == 0;
+			}
+			else tickable = true;
 			
-			if(e.isPresent() && e.get().isShortcutDown() && e.get().isShiftDown()){
+			System.out.println(ralentissement + " -> " + tickable);
+			
+			ralentissement --;
+		}
+
+	
+		if (e != null && tickable){
+			
+			KeyCode kc = e.getCode();
+			
+			if(e != null && e.isShortcutDown() && e.isShiftDown()){
 				perso.montrerLesFleches(true);
 			}
 			
-			else if(e.isPresent() && e.get().isShortcutDown()){
+			else if(e != null && e.isShortcutDown()){
 				perso.montrerLesFleches(false);
 			}
 			else {
@@ -89,8 +115,8 @@ public class ControleurClavier {
 			
 			switch (kc) {
 			case Z:
-			case UP:   if(e.isPresent() && e.get().isShortcutDown()){
-				          if (e.isPresent() && e.get().isShiftDown()){
+			case UP:   if(e != null && e.isShortcutDown()){
+				          if (e != null && e.isShiftDown()){
 				        	  perso.deformationBas(deltaChange);
 				          }
 				          else {
@@ -99,12 +125,22 @@ public class ControleurClavier {
 				          perso.getFleches().get(Sens.HAUT).activation();
 			            }
 			            else {
+                            
+			            	// Animation pour des mouvements plus fluides
+			            	// mais hélas, pas de détection des contacts
+			            	
+//			            	KeyValue xValueFinale   = new KeyValue(perso.yProperty(), perso.getY() - (1 + bonus));
+//			            	
+//			            	timeline.getKeyFrames().clear();
+//			            	timeline.getKeyFrames().add(new KeyFrame(new Duration(30), xValueFinale));
+//			            	timeline.play();
+			            	
 			            	perso.deplacement(0, -1);
 			            }
 				break;
 			case S :
-			case DOWN: if(e.isPresent() && e.get().isShortcutDown()){
-		          		  if (e.isPresent() && e.get().isShiftDown()){
+			case DOWN: if(e != null && e.isShortcutDown()){
+		          		  if (e != null && e.isShiftDown()){
 		          			  perso.deformationHaut(deltaChange);
 			              }
 			              else {
@@ -117,8 +153,8 @@ public class ControleurClavier {
 		                }
 			    break;
 			case Q :
-			case LEFT: if(e.isPresent() && e.get().isShortcutDown()){
-		          		  if (e.isPresent() && e.get().isShiftDown()){
+			case LEFT: if(e != null && e.isShortcutDown()){
+		          		  if (e != null && e.isShiftDown()){
 		        	          perso.deformationDroite(deltaChange);
 			              }
 			              else {
@@ -131,8 +167,8 @@ public class ControleurClavier {
 		              }
 			    break;
 			case D :
-			case RIGHT:  if(e.isPresent() && e.get().isShortcutDown()){
-		                    if (e.isPresent() && e.get().isShiftDown()){
+			case RIGHT:  if(e != null && e.isShortcutDown()){
+		                    if (e != null && e.isShiftDown()){
 		        	           perso.deformationGauche(deltaChange);
 			                }
 			                else {
@@ -174,17 +210,24 @@ public class ControleurClavier {
 				scene.setRoot(new AnchorPane());
 				
 				Statiques.getTimer().cancel();
-				e = Optional.empty();
+				
+				e = null;
 
 				main.retourMenu();
 			}
 			break;
 			default :
-			}	
+			}
+			
+		    if (perso.getRectangle2D().intersects(goal2D.getRectangle2D())){
+				
+	        	goal2D.setImage(new Image("goal_vert.png"));
+				
+	        	main.inactive();
+	        	main.afficherSores();
+			}
 		}
 		
-		else {
-			perso.deplacement(0, 0);
-		}
+        
 	}
 }
