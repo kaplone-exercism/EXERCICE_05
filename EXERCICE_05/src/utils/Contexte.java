@@ -1,6 +1,5 @@
 package utils;
 
-import javafx.scene.layout.AnchorPane;
 import models.Goal2D;
 import models.Niveau;
 import models.Personnage2D;

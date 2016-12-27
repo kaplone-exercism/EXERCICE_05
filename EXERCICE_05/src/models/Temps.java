@@ -2,6 +2,7 @@ package models;
 
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import utils.Contexte;
 import javafx.scene.control.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -52,7 +53,7 @@ public class Temps {
 		Label l2 = new Label("Temps Maximal"); 
 		HBox h11 = new HBox();
 		h11.setAlignment(Pos.CENTER);
-		h11c1 = new Label("00:00.00"); 
+		h11c1 = new Label("00:00.0"); 
 		h11c1.setStyle("-fx-font-size: 15pt;" +
 			    "-fx-text-fill: rgb(40, 239, 4);" +
 	            "-fx-border-color: rgb(40, 239, 4);" +
@@ -60,7 +61,7 @@ public class Temps {
 	            "-fx-padding: 3 6 6 6;");
 		HBox h21 = new HBox();
 		h21.setAlignment(Pos.CENTER);
-		Label h21c1 = new Label(String.format("%02d:%02d.%02d", minutesTopMonde, secondesTopMonde, dixiemesTopMonde)); 
+		Label h21c1 = new Label(String.format("%02d:%02d.%d", minutesTopMonde, secondesTopMonde, dixiemesTopMonde)); 
 		h21c1.setStyle("-fx-font-size: 15pt;" +
 			    "-fx-text-fill: rgb(49, 89, 23);" +
 	            "-fx-border-color: rgb(49, 89, 23);" +

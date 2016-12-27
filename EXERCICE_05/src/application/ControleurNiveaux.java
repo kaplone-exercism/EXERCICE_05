@@ -126,7 +126,6 @@ public class ControleurNiveaux{
 	    			
 
     				niveau.setHorloge(new Temps(5, 4, 14, 24, 3, 7));
-    				niveau.setChronoTask(createWorker());
     				fullGame.getChildren().add(niveau.getHorloge().getH1());
 	    		}
 	    		else {
@@ -247,6 +246,7 @@ public class ControleurNiveaux{
 		stagePrincipal.setHeight(635);
 		
 		Contexte.setNiveau(niveau);
+		niveau.setChronoTask(createWorker());
 
 		TickTimer.nouveauTimer();
 	
@@ -274,8 +274,7 @@ public class ControleurNiveaux{
             	
             	LocalDateTime debut = LocalDateTime.now();
 
-            	boolean boucle = true;
-            	while (boucle){
+            	while (Contexte.getNiveau().isEnCoursDeFonctionnement()){
             			
             		Thread.sleep(100);     
             		duree = Duration.between(debut, LocalDateTime.now());

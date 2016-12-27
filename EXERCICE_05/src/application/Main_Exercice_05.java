@@ -2,18 +2,9 @@ package application;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
-import models.Mur2D;
-import models.Personnage2D;
-import utils.Contexte;
-import utils.Settings;
-import utils.Statiques;
-import utils.TickTimer;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -25,10 +16,17 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.Parent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
+
+import models.Mur2D;
+import models.Personnage2D;
+import utils.Contexte;
+import utils.Settings;
+import utils.Statiques;
+import utils.TickTimer;
 
 public class Main_Exercice_05 extends Application implements Initializable{
 
@@ -195,6 +193,7 @@ public class Main_Exercice_05 extends Application implements Initializable{
 		});
 		
 		TickTimer.nouveauTimer();
+		Contexte.getNiveau().setEnCoursDeFonctionnement(true);
 	}
 	
 	public static void nouvelleFenetreNiveaux(){

@@ -1,8 +1,9 @@
 package application;
 
-import enums.Sens;
-import javafx.animation.Timeline;
+import utils.Contexte;
+import utils.Statiques;
 
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -11,11 +12,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import enums.Sens;
 import models.Goal2D;
 import models.Niveau;
 import models.Personnage2D;
-import utils.Contexte;
-import utils.Statiques;
 
 public class ControleurClavier {
 	
@@ -37,6 +38,8 @@ public class ControleurClavier {
 	private static Niveau niveau;
 	private static KeyEvent e;
 	
+	private static Thread t;
+	
 	static public void init(Niveau niveau_){
 		
 		niveau = niveau_;
@@ -52,9 +55,11 @@ public class ControleurClavier {
 		niveau.getHorloge().getH11c1().textProperty().unbind();
 		niveau.getHorloge().getH11c1().textProperty().bind(niveau.getChronoTask().messageProperty());
 		
-		Thread t = new Thread(niveau.getChronoTask());
+		t = new Thread(niveau.getChronoTask());
 		niveau.setChronoThread(t);
 		t.start();
+		niveau.setEnCoursDeFonctionnement(true);
+		Contexte.setNiveau(niveau);
 		
 		stage.setOnCloseRequest(a -> niveau.getChronoTask().cancel());
 
@@ -82,7 +87,7 @@ public class ControleurClavier {
 	}
 	
 	static public void gerer_keys(){
-		
+
 		if(moveable){
 			if (ralentissement > 14){
 				tickable = ralentissement % 5 == 0;
@@ -98,7 +103,7 @@ public class ControleurClavier {
 		}
 
 	
-		if (e != null && tickable){
+		if (e != null && tickable && Contexte.getNiveau().isEnCoursDeFonctionnement()){
 			
 			KeyCode kc = e.getCode();
 			
@@ -201,7 +206,8 @@ public class ControleurClavier {
 	        break;
 			case ESCAPE: {
 				
-				niveau.getChronoThread().interrupt();
+				//niveau.getChronoThread().interrupt();
+				//Contexte.getNiveau().setEnCoursDeFonctionnement(false);
 				
 				Contexte.setPerso(perso);
 				Contexte.setNiveau(niveau);
@@ -223,6 +229,11 @@ public class ControleurClavier {
 				
 	        	goal2D.setImage(new Image("goal_vert.png"));
 				
+	        	niveau.getChronoThread().interrupt();
+	        	Contexte.getNiveau().setEnCoursDeFonctionnement(false);
+	        	moveable = false;
+	        	tickable =false;
+	        	
 	        	main.inactive();
 	        	main.afficherSores();
 			}

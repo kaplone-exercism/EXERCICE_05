@@ -17,6 +17,8 @@ public class Niveau extends AnchorPane {
 	private Temps horloge;
     private Thread chronoThread;
 	private Task<Object> chronoTask;
+	
+	private boolean enCoursDeFonctionnement;
 
 	public String getNom() {
 		return nom;
@@ -81,4 +83,12 @@ public class Niveau extends AnchorPane {
 	public void setChronoTask(Task<Object> task) {
 		this.chronoTask = task;
 	}
+	public boolean isEnCoursDeFonctionnement() {
+		return enCoursDeFonctionnement;
+	}
+	public void setEnCoursDeFonctionnement(boolean enCoursDeFonctionnement) {
+		this.enCoursDeFonctionnement = enCoursDeFonctionnement;
+	}
+	
+	
 }
