@@ -9,8 +9,8 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import models.Personnage2D;
-import models.Settings;
-import models.Statiques;
+import utils.Settings;
+import utils.Statiques;
 
 public class ControleurSouris {
 	

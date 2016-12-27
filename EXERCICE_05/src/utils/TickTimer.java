@@ -5,8 +5,6 @@ import java.util.TimerTask;
 
 import application.ControleurClavier;
 import javafx.application.Platform;
-import models.Sauvegarde;
-import models.Statiques;
 
 public class TickTimer {
 	
@@ -26,7 +24,7 @@ public class TickTimer {
 	
 	public static TimerTask makeTask(){
 		
-		ControleurClavier.init(Sauvegarde.getNiveau());
+		ControleurClavier.init(Contexte.getNiveau());
 		
         timerTask = new TimerTask() {
         	@Override

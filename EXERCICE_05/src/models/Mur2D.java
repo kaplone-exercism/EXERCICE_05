@@ -5,6 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import utils.Settings;
 
 public class Mur2D extends Rectangle{
 	

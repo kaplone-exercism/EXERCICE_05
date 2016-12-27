@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 import models.Goal2D;
 import models.Niveau;
 import models.Personnage2D;
-import models.Sauvegarde;
-import models.Statiques;
+import utils.Contexte;
+import utils.Statiques;
 
 public class ControleurClavier {
 	
@@ -203,9 +203,9 @@ public class ControleurClavier {
 				
 				niveau.getChronoThread().interrupt();
 				
-				Sauvegarde.setPerso(perso);
-				Sauvegarde.setNiveau(niveau);
-				Sauvegarde.setGoal2D(goal2D);
+				Contexte.setPerso(perso);
+				Contexte.setNiveau(niveau);
+				Contexte.setGoal2D(goal2D);
 				
 				scene.setRoot(new AnchorPane());
 				

@@ -37,10 +37,10 @@ import models.Goal2D;
 import models.Mur2D;
 import models.Niveau;
 import models.Personnage2D;
-import models.Sauvegarde;
-import models.Settings;
-import models.Statiques;
 import models.Temps;
+import utils.Contexte;
+import utils.Settings;
+import utils.Statiques;
 import utils.TickTimer;
 
 public class ControleurNiveaux{
@@ -250,7 +250,7 @@ public class ControleurNiveaux{
 		stagePrincipal.setWidth(1005);
 		stagePrincipal.setHeight(635);
 		
-		Sauvegarde.setNiveau(niveau);
+		Contexte.setNiveau(niveau);
 
 		TickTimer.nouveauTimer();
 	

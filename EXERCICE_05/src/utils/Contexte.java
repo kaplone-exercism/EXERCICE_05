@@ -1,8 +1,11 @@
-package models;
+package utils;
 
 import javafx.scene.layout.AnchorPane;
+import models.Goal2D;
+import models.Niveau;
+import models.Personnage2D;
 
-public class Sauvegarde {
+public class Contexte {
 	
 	private static Niveau niveau;
 	private static Personnage2D perso;

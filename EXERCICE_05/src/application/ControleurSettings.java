@@ -15,9 +15,9 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import models.Sauvegarde;
-import models.Settings;
-import models.Statiques;
+import utils.Contexte;
+import utils.Settings;
+import utils.Statiques;
 
 public class ControleurSettings implements Initializable {
 	
@@ -62,9 +62,9 @@ public class ControleurSettings implements Initializable {
 		versPartie.setLayoutX(470);
 		versPartie.setLayoutY(350);
 		versPartie.setOnAction(a -> {
-			Sauvegarde.getPerso().setFill(Settings.getCouleurPerso());
-			Sauvegarde.getNiveau().getListeDesMurs().stream().forEach(m -> m.setFill(Settings.getCouleurMurs()));
-			Optional<Node> optFond = Sauvegarde.getNiveau()
+			Contexte.getPerso().setFill(Settings.getCouleurPerso());
+			Contexte.getNiveau().getListeDesMurs().stream().forEach(m -> m.setFill(Settings.getCouleurMurs()));
+			Optional<Node> optFond = Contexte.getNiveau()
 					                                .getFullGame()
 					                                .getChildren()
 					                                .stream()
@@ -74,7 +74,7 @@ public class ControleurSettings implements Initializable {
 			optFond.ifPresent(o -> ((Rectangle)o).setFill(Settings.getCouleurFond()));
 			main.retourPartie();
 		});
-		versPartie.setDisable(Sauvegarde.getNiveau() == null);
+		versPartie.setDisable(Contexte.getNiveau() == null);
 
 		((AnchorPane) scene.getRoot()).getChildren().addAll(versMenu, versPartie);
 

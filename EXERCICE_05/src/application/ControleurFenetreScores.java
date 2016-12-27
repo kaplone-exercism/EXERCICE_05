@@ -16,21 +16,21 @@ import javafx.scene.Scene;
 
 import javafx.scene.control.*;
 
-public class FenetreScores extends AnchorPane{
+public class ControleurFenetreScores extends AnchorPane{
 	
 	private int score;
 	private Date temps;
 	private int touches;
 	private int deplacements;
 	
-	public FenetreScores(int score, Date temps, int touches, int deplacements) {
+	public ControleurFenetreScores(int score, Date temps, int touches, int deplacements) {
 		this.score = score;
 		this.temps = temps;
 		this.touches = touches;
 		this.deplacements = deplacements;
 	}
 	
-	public FenetreScores() {
+	public ControleurFenetreScores() {
 
 		Stage stageScores = new Stage();
 

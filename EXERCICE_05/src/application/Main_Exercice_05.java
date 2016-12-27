@@ -10,9 +10,9 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import models.Mur2D;
 import models.Personnage2D;
-import models.Sauvegarde;
-import models.Settings;
-import models.Statiques;
+import utils.Contexte;
+import utils.Settings;
+import utils.Statiques;
 import utils.TickTimer;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -140,7 +140,7 @@ public class Main_Exercice_05 extends Application implements Initializable{
     void afficherSores() {
 
     	if (fen_scores == null){
-    		fen_scores = new FenetreScores();
+    		fen_scores = new ControleurFenetreScores();
     		
     		Stage fenStage = (Stage) fen_scores.getScene().getWindow();
     		fenStage.setOnCloseRequest(a -> {
@@ -162,10 +162,10 @@ public class Main_Exercice_05 extends Application implements Initializable{
 	
 	public void retourPartie(){
 
-        AnchorPane root = Sauvegarde.getNiveau().getFullGame();
+        AnchorPane root = Contexte.getNiveau().getFullGame();
         Scene scene = new Scene(root);
 
-		Personnage2D r0 = Sauvegarde.getNiveau().getPerso();
+		Personnage2D r0 = Contexte.getNiveau().getPerso();
 		
 		r0.toFront();
 		r0.cacherLesFleches();
@@ -180,7 +180,7 @@ public class Main_Exercice_05 extends Application implements Initializable{
 		stage.setWidth(1005);
 		stage.setHeight(635);
 		
-		for (Mur2D mur : Sauvegarde.getNiveau().getListeDesMurs()){
+		for (Mur2D mur : Contexte.getNiveau().getListeDesMurs()){
 			mur.setOnMouseEntered(c -> {
 				if (c.isAltDown())
 				afficheInfos(mur, c, true);
