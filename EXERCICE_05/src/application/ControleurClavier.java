@@ -92,7 +92,7 @@ public class ControleurClavier {
 			}
 			else tickable = true;
 			
-			System.out.println(ralentissement + " -> " + tickable);
+			//System.out.println(ralentissement + " -> " + tickable);
 			
 			ralentissement --;
 		}

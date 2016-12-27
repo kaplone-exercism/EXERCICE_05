@@ -62,8 +62,6 @@ public class Main_Exercice_05 extends Application implements Initializable{
 	@Override
 	public void start(Stage primaryStage) {
 		
-		System.out.println("start");
-		
 		//primaryStage.initStyle(StageStyle.UNDECORATED);
 		
 		try {
@@ -234,9 +232,7 @@ public class Main_Exercice_05 extends Application implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		System.out.println("initialize");
-		
+
 		Statiques.setLocation(location);
 		Statiques.setResources(resources);
 		

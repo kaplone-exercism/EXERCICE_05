@@ -20,6 +20,10 @@ public class Personnage2D extends Rectangle {
 	private final double surface;
 	private Map<Sens, Fleche> fleches;
 	
+	private double undoRectangleWidth;
+	private double undoRectangleHeight;
+	
+	
 	public Personnage2D(double x, double y, double width, double height, Paint fill, Niveau niveau) {
 		super(x, y, width, height);
 		
@@ -147,6 +151,8 @@ public class Personnage2D extends Rectangle {
     
     public boolean deformationGaucheUnitaire(int deformation){
     	
+    	makeUndoRectangle();
+    	
     	double widthSave = this.getWidth();
  	
     	this.setWidth(Math.round(this.widthProperty().add(deformation).doubleValue()));
@@ -166,7 +172,8 @@ public class Personnage2D extends Rectangle {
     	updateRectangle2D();
     		
         if (enContact()){
-        	deformationGaucheUnitaire(- deformation);	
+        	readUndoRectangle();
+        	//deformationGaucheUnitaire(- deformation);	
         	return false;
         }	
     	return true;
@@ -191,6 +198,8 @@ public class Personnage2D extends Rectangle {
     	updateRectangle2D();
     }
     public boolean deformationDroiteUnitaire(int deformation){
+    	
+    	makeUndoRectangle();
        	
     	this.setWidth(Math.round(this.widthProperty().add(deformation).doubleValue())); 
     	if (this.getWidth() < 20){
@@ -208,7 +217,8 @@ public class Personnage2D extends Rectangle {
     	updateRectangle2D();
 	
         if (enContact()){
-        	deformationDroiteUnitaire(- deformation);	
+        	readUndoRectangle();
+        	//deformationDroiteUnitaire(- deformation);	
         	return false;
         }	
         return true;
@@ -234,6 +244,8 @@ public class Personnage2D extends Rectangle {
     
     public boolean deformationHautUnitaire(int deformation){
     	
+    	makeUndoRectangle();
+    	
     	double heightSave = this.getHeight();
     	
     	this.setHeight(Math.round(this.heightProperty().add(deformation).doubleValue()));
@@ -253,7 +265,8 @@ public class Personnage2D extends Rectangle {
     	updateRectangle2D();
 
         if (enContact()){
-        	deformationHautUnitaire( - deformation);
+        	readUndoRectangle();
+        	//deformationHautUnitaire( - deformation);
         	return false;
         }	
         return true;
@@ -280,6 +293,8 @@ public class Personnage2D extends Rectangle {
     
     public boolean deformationBasUnitaire(int deformation){
     	
+    	makeUndoRectangle();
+    	
     	this.setHeight(Math.round(this.heightProperty().add(deformation).doubleValue()));
     	if (this.getHeight() < 20){
     		this.setHeight(20);	
@@ -296,7 +311,8 @@ public class Personnage2D extends Rectangle {
     	updateRectangle2D();
 
         if (enContact()){
-        	deformationBasUnitaire(- deformation);
+        	readUndoRectangle();
+        	//deformationBasUnitaire(- deformation);
         	return false;
         }	
     	
@@ -342,7 +358,15 @@ public class Personnage2D extends Rectangle {
 	
 	public Map<Sens, Fleche> getFleches() {
 		return fleches;
+	}	
+	
+	private void makeUndoRectangle(){
+		undoRectangleWidth = this.getWidth();
+		undoRectangleHeight = this.getHeight();
 	}
 	
-	
+	private void readUndoRectangle(){
+		this.setWidth(undoRectangleWidth);
+		this.setHeight(undoRectangleHeight);
+	}
 }
