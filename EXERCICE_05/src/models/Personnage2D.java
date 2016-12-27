@@ -32,6 +32,7 @@ public class Personnage2D extends Rectangle {
 		this.surface = width * height;
 		
 		fleches = new HashMap<Sens, Fleche>();
+		ajoutFleches();
 		
 		this.niveau = niveau;
 	}

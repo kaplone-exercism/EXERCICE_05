@@ -47,8 +47,6 @@ public class ControleurNiveaux{
 	
 	String home =  System.getProperty("user.home");
 	File settings_file = new File(home, "shapesinthemazes_niveaux.txt");
-	
-	Controleur ct;
 
 	private static ImageView imv;
 	
@@ -108,8 +106,6 @@ public class ControleurNiveaux{
 	    			}
 	    			
 	    			niveau = new Niveau();
-    			
-	    			ct = new Controleur();
 
 	    			hb = new HBox();
 	    			hb.setPadding(new Insets(20));
@@ -145,7 +141,7 @@ public class ControleurNiveaux{
 		    			int w = Integer.parseInt(ligne.split(",")[3].trim());
 		    			int h = Integer.parseInt(ligne.split(",")[4].trim());
 
-		    			niveau.setPerso(ct.init(x, y, w, h, couleur, niveau));
+		    			niveau.setPerso(new Personnage2D(x, y, w, h, couleur, niveau));
 	    			}
 	    			else if ("MUR".equals(marqueur)){
 	    				
