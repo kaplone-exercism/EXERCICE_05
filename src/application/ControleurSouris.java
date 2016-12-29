@@ -21,22 +21,11 @@ public class ControleurSouris {
 	
     static public void gerer_sourisBouge(MouseEvent me, boolean aff){
     	
-    	infos = getInfos(me);
-    	AnchorPane root = Statiques.getRoot();
-    	
-    	infos.setBackground(getBackground());
-    	if(! root.getChildren().contains(infos)){
-			root.getChildren().add(infos);	
-		}
+    	infos = getInfos();
 
-    	infos.setEffect(getDropShadow());
-    	infos.setStyle("-fx-border-color: grey; -fx-border-width: 1; -fx-border-style: solid inside; -fx-border-insets: -5;");
-		
     	infos.setText(String.format("X=%d\nY=%d", (int)me.getSceneX(), (int)me.getSceneY()));
-		
     	infos.setLayoutX(me.getSceneX() -55);
     	infos.setLayoutY(me.getSceneY() -45);
-		
 		infos.setVisible(aff && Settings.isAffPositionSouris());
 		infos.toFront();		
 	}
@@ -72,10 +61,22 @@ public class ControleurSouris {
         return background;	 	
     }
     
-    public static Label getInfos(MouseEvent me) {
+    public static Label getInfos() {
 		
 		if (infos == null){
+			
+			AnchorPane root = Statiques.getRoot();
+			
 			infos = new Label();
+			infos.setPrefWidth(45);
+			infos.setPrefHeight(30);
+			infos.setBackground(getBackground());
+	    	if(! root.getChildren().contains(infos)){
+				root.getChildren().add(infos);	
+			}
+
+	    	infos.setEffect(getDropShadow());
+	    	infos.setStyle("-fx-border-color: grey; -fx-border-width: 1; -fx-border-style: solid inside; -fx-border-insets: -5;");
 		}
 		return infos;
 	}

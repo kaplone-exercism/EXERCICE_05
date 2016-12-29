@@ -155,6 +155,8 @@ public class Main_Exercice_05 extends Application implements Initializable{
 	
 	public static void nouvelleFenetreNiveaux(){
 		
+		stopAnimations();
+		
 		AnchorPane root = Statiques.getRoot();	
 		scene = root.getScene();
     	stagePrincipal = (Stage) scene.getWindow();
@@ -175,6 +177,8 @@ public class Main_Exercice_05 extends Application implements Initializable{
 	}
 	
     public void nouvelleFenetreSettings(){
+    	
+    	stopAnimations();
 		
     	scene = root.getScene();
     	stagePrincipal = (Stage) scene.getWindow();
@@ -231,5 +235,12 @@ public class Main_Exercice_05 extends Application implements Initializable{
 		settings.setOnMouseClicked(a -> nouvelleFenetreSettings());
 		exit.setOnMouseClicked(a -> System.exit(0));
 		launch.setOnMouseClicked(a -> nouvelleFenetreNiveaux());	
+	}
+	
+	private static void stopAnimations(){
+		if(ts_launch != null) ts_launch.stop();
+		if(te_launch != null) te_launch.stop();
+		if(t_launch != null) t_launch.stop();
+		if(tm_launch != null) tm_launch.stop();
 	}
 }

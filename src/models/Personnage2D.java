@@ -5,21 +5,24 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.collections.ObservableList;
-import javafx.geometry.Rectangle2D;
+//import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-
+import javafx.stage.Screen;
 import enums.Sens;
 
 
 public class Personnage2D extends Rectangle {
 
-	private Rectangle2D rectangle2D;
+	//private Rectangle2D rectangle2D;
 	private Niveau niveau;
 	private final double surface;
 	private Map<Sens, Fleche> fleches;
 	
+	private double undoRectangleX;
+	private double undoRectangleY;
 	private double undoRectangleWidth;
 	private double undoRectangleHeight;
 	
@@ -28,7 +31,9 @@ public class Personnage2D extends Rectangle {
 		super(x, y, width, height);
 		
 		this.setFill(fill);
-		this.rectangle2D = new Rectangle2D(x, y, width, height);
+//		this.setStroke(Color.GREEN);
+//		this.setStrokeWidth(1);
+		//this.rectangle2D = new Rectangle2D(x, y, width, height);
 		this.surface = width * height;
 		
 		fleches = new HashMap<Sens, Fleche>();
@@ -62,53 +67,43 @@ public class Personnage2D extends Rectangle {
 		
 		while (x != 0 || y != 0){
 			
-			if (x > 0){
+			if (x > 0 && !enContact()){
 				this.setX(this.getX() + 1);
-				updateRectangle2D();
-				if (enContact()){
+				if(enContact()){
 					this.setX(this.getX() - 1);
 					x = 0;
-					updateRectangle2D();
 				}
-				else{
-					x--;
+				else {
+				    x--;	
 				}
-				
 			}
 			else if (x < 0){
 				this.setX(this.getX() - 1);
-				updateRectangle2D();
-				if (enContact()){
+				if(enContact()){
 					this.setX(this.getX() + 1);
 					x = 0;
-					updateRectangle2D();
 				}
 				else {
-					x++;
+					x++;	
 				}
-				
+						
 			}
 			
-			if (y > 0){
+			if (y > 0 && !enContact()){
 				this.setY(this.getY() + 1);
-				updateRectangle2D();
-				if (enContact()){
+				if(enContact()){
 					this.setY(this.getY() - 1);
 					y = 0;
-					updateRectangle2D();
 				}
 				else {
-					y--;
+				    y--;
 				}
-				
 			}
-			else if (y < 0){
+			else if (y < 0 && !enContact()){
 				this.setY(this.getY() - 1);
-				updateRectangle2D();
-				if (enContact()){
+				if(enContact()){
 					this.setY(this.getY() + 1);
 					y = 0;
-					updateRectangle2D();
 				}
 				else {
 					y++;
@@ -119,8 +114,9 @@ public class Personnage2D extends Rectangle {
 	
 	public boolean sansContact(){
 		
-		for (Mur2D m2D : niveau.getListeDesMurs()){
-			if (m2D.getRectangle2D().intersects(this.rectangle2D)){
+		for (Mur2D m2D : niveau.getListeDesMurs()){			
+			
+			if (m2D.getBoundsInParent().intersects(this.getX() +1, this.getY() +1, this.getWidth() -2, this.getHeight() -2)){
 				return false;
 			}
 		}
@@ -146,8 +142,6 @@ public class Personnage2D extends Rectangle {
     			delta++;
     		}
     	}
-    	
-    	updateRectangle2D();
     }
     
     public boolean deformationGaucheUnitaire(int deformation){
@@ -169,12 +163,15 @@ public class Personnage2D extends Rectangle {
     		return false;
     	}
     	
+    	if (enContact()){
+        	readUndoRectangle();
+        	return false;
+        }
+    	
     	deplacement(- deformation, 0);
-    	updateRectangle2D();
     		
         if (enContact()){
         	readUndoRectangle();
-        	//deformationGaucheUnitaire(- deformation);	
         	return false;
         }	
     	return true;
@@ -195,8 +192,6 @@ public class Personnage2D extends Rectangle {
     			delta++;
     		}
     	}
-    	
-    	updateRectangle2D();
     }
     public boolean deformationDroiteUnitaire(int deformation){
     	
@@ -214,12 +209,9 @@ public class Personnage2D extends Rectangle {
     		this.setWidth(Math.round(surface / this.getHeight()));
     		return false;
     	}
-    	
-    	updateRectangle2D();
 	
         if (enContact()){
         	readUndoRectangle();
-        	//deformationDroiteUnitaire(- deformation);	
         	return false;
         }	
         return true;
@@ -240,7 +232,6 @@ public class Personnage2D extends Rectangle {
     			delta++;
     		}
     	}
-    	updateRectangle2D();
 	}
     
     public boolean deformationHautUnitaire(int deformation){
@@ -261,13 +252,16 @@ public class Personnage2D extends Rectangle {
     		this.setHeight(Math.round(surface / this.getWidth()));
     		return false;
     	}
+    	
+    	if (enContact()){
+        	readUndoRectangle();
+        	return false;
+        }
 	    
     	deplacement(0, heightSave -this.getHeight());
-    	updateRectangle2D();
 
         if (enContact()){
         	readUndoRectangle();
-        	//deformationHautUnitaire( - deformation);
         	return false;
         }	
         return true;
@@ -288,8 +282,6 @@ public class Personnage2D extends Rectangle {
     			delta++;
     		}
     	}
-    	
-    	updateRectangle2D();
 	}
     
     public boolean deformationBasUnitaire(int deformation){
@@ -309,14 +301,10 @@ public class Personnage2D extends Rectangle {
     		return false;
     	}
 
-    	updateRectangle2D();
-
         if (enContact()){
         	readUndoRectangle();
-        	//deformationBasUnitaire(- deformation);
         	return false;
         }	
-    	
     	return true;
     }
     
@@ -343,30 +331,23 @@ public class Personnage2D extends Rectangle {
     		f.setVisible(false);
     	}
     }
-	
-	public void updateRectangle2D(){
 
-		this.rectangle2D = new Rectangle2D(
-                                   this.getX(),
-                                   this.getY(),
-                                   this.getWidth(),
-                                   this.getHeight());
-	}
-
-	public Rectangle2D getRectangle2D() {
-		return rectangle2D;
-	}
-	
 	public Map<Sens, Fleche> getFleches() {
 		return fleches;
 	}	
 	
 	private void makeUndoRectangle(){
+		
+		undoRectangleX = this.getX();
+		undoRectangleY = this.getY();
 		undoRectangleWidth = this.getWidth();
 		undoRectangleHeight = this.getHeight();
 	}
 	
 	private void readUndoRectangle(){
+
+		this.setX(undoRectangleX);
+		this.setY(undoRectangleY);
 		this.setWidth(undoRectangleWidth);
 		this.setHeight(undoRectangleHeight);
 	}

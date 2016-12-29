@@ -225,7 +225,9 @@ public class ControleurClavier {
 			default :
 			}
 			
-		    if (perso.getRectangle2D().intersects(goal2D.getRectangle2D())){
+		    //if (perso.getRectangle2D().intersects(goal2D.getRectangle2D())){
+		    if (perso.getBoundsInLocal().intersects(goal2D.getBoundsInLocal())){
+		    	
 				
 	        	goal2D.setImage(new Image("goal_vert.png"));
 				
