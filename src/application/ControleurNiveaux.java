@@ -250,6 +250,10 @@ public class ControleurNiveaux{
 		niveau.setChronoTask(createWorker());
 
 		TickTimer.nouveauTimer();
+		
+		
+		Contexte.getNiveau().getChronoThread().interrupt();
+		Contexte.getNiveau().setEnCoursDeFonctionnement(false);
 	
 		for (Mur2D mur : niveau.getListeDesMurs()){
 			mur.setOnMouseEntered(c -> {
@@ -271,7 +275,7 @@ public class ControleurNiveaux{
             @Override
             protected Object call() throws Exception {
             	
-            	updateMessage("00:00.00");
+            	updateMessage("00:00.0");
             	
             	LocalDateTime debut = LocalDateTime.now();
 

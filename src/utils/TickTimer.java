@@ -12,9 +12,12 @@ public class TickTimer {
 	static Timer timer;
 	
 	public static void nouveauTimer(long delai ){
+		
+		ControleurClavier.init(Contexte.getNiveau());
 
 		timer = new Timer(true);
-		timer.schedule(makeTask(), 0, delai);
+		timerTask = makeTask();
+		timer.schedule(timerTask, 0, delai);
 		Statiques.setTimer(timer);
 	}
 	
@@ -23,10 +26,8 @@ public class TickTimer {
 	}
 	
 	public static TimerTask makeTask(){
-		
-		ControleurClavier.init(Contexte.getNiveau());
-		
-        timerTask = new TimerTask() {
+
+		return new TimerTask() {
         	@Override
         	public void run() {
         		Platform.runLater(() -> {
@@ -34,14 +35,13 @@ public class TickTimer {
         		});
         	}
 		};
-		
-		return timerTask;
 	}
 	
-	public static void updateTimer(long delai){
-		timerTask.cancel();
-		makeTask();
-		Statiques.getTimer().schedule(timerTask, 0, delai);
+	public static void reloadTimer(long delai){
+		timer = new Timer(true);
+		timerTask = makeTask();
+		timer.schedule(timerTask, 0, delai);
+		Statiques.setTimer(timer);
 	}
 
 }

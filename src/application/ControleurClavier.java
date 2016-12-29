@@ -52,21 +52,36 @@ public class ControleurClavier {
 		perso = niveau.getPerso();
 		goal2D = niveau.getGoal2D();
 		
-		niveau.getHorloge().getH11c1().textProperty().unbind();
-		niveau.getHorloge().getH11c1().textProperty().bind(niveau.getChronoTask().messageProperty());
+		Contexte.setNiveau(niveau);
 		
 		t = new Thread(niveau.getChronoTask());
 		niveau.setChronoThread(t);
-		t.start();
-		niveau.setEnCoursDeFonctionnement(true);
-		Contexte.setNiveau(niveau);
 		
-		stage.setOnCloseRequest(a -> niveau.getChronoTask().cancel());
-
-		scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+		stage.setOnCloseRequest(a -> niveau.getChronoTask().cancel());	
+		
+		addEventHandlers();
+	}
+	
+	
+	static public void addEventHandlers(){
+		
+	    scene = Statiques.getScene();
+	    niveau = Contexte.getNiveau();
+		
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			
 			@Override
-			public void handle(KeyEvent e_) {
+			public void handle(KeyEvent e_) {				
+				
+				if(t != null && !t.isAlive()){
+					
+					niveau.getHorloge().getH11c1().textProperty().unbind();
+					niveau.getHorloge().getH11c1().textProperty().bind(niveau.getChronoTask().messageProperty());
+
+					t.start();
+					niveau.setEnCoursDeFonctionnement(true);
+				}
+				
 				moveable = true;
 				e = e_;
 			}
@@ -96,8 +111,6 @@ public class ControleurClavier {
 				tickable = ralentissement % 2 == 0;
 			}
 			else tickable = true;
-			
-			//System.out.println(ralentissement + " -> " + tickable);
 			
 			ralentissement --;
 		}
@@ -206,9 +219,6 @@ public class ControleurClavier {
 	        break;
 			case ESCAPE: {
 				
-				//niveau.getChronoThread().interrupt();
-				//Contexte.getNiveau().setEnCoursDeFonctionnement(false);
-				
 				Contexte.setPerso(perso);
 				Contexte.setNiveau(niveau);
 				Contexte.setGoal2D(goal2D);
@@ -224,14 +234,15 @@ public class ControleurClavier {
 			break;
 			default :
 			}
-			
-		    //if (perso.getRectangle2D().intersects(goal2D.getRectangle2D())){
+
 		    if (perso.getBoundsInLocal().intersects(goal2D.getBoundsInLocal())){
 		    	
 				
 	        	goal2D.setImage(new Image("goal_vert.png"));
 				
-	        	niveau.getChronoThread().interrupt();
+	        	t.interrupt();
+	        	t = null;
+	        	niveau.setChronoThread(t);
 	        	Contexte.getNiveau().setEnCoursDeFonctionnement(false);
 	        	moveable = false;
 	        	tickable =false;

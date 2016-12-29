@@ -149,7 +149,8 @@ public class Main_Exercice_05 extends Application implements Initializable{
 				ControleurSouris.gerer_sourisBouge(e, !e.isAltDown());
 		});
 		
-		TickTimer.nouveauTimer();
+		TickTimer.reloadTimer(20);
+		ControleurClavier.addEventHandlers();
 		Contexte.getNiveau().setEnCoursDeFonctionnement(true);
 	}
 	
