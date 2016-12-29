@@ -133,12 +133,12 @@ public class Personnage2D extends Rectangle {
     	double delta = this.widthProperty().multiply(ratio).doubleValue() - widthSave;
     	
     	if(delta > 0){
-    		while (delta > 0 && deformationGaucheUnitaire(1)){
+    		while (delta > 0 && this.getHeight() > 20 && deformationGaucheUnitaire(1)){
     			delta--;
     		}
     	}
     	else {
-    		while (delta < 0 && deformationGaucheUnitaire(-1)){
+    		while (delta < 0 && this.getWidth() > 20 && deformationGaucheUnitaire(-1)){
     			delta++;
     		}
     	}
@@ -183,12 +183,12 @@ public class Personnage2D extends Rectangle {
     	double delta = this.widthProperty().multiply(ratio).doubleValue() - widthSave;
     	
     	if(delta > 0){
-    		while (delta > 0 && deformationDroiteUnitaire(1)){
+    		while (delta > 0 && this.getHeight() > 20 && deformationDroiteUnitaire(1)){
     			delta--;
     		}
     	}
     	else {
-    		while (delta < 0 && deformationDroiteUnitaire(-1)){
+    		while (delta < 0 && this.getWidth() > 20 && deformationDroiteUnitaire(-1)){
     			delta++;
     		}
     	}
@@ -222,13 +222,13 @@ public class Personnage2D extends Rectangle {
     	double heightSave = this.getHeight();
     	double delta = this.heightProperty().multiply(ratio).doubleValue() - heightSave;
 	
-    	if(delta > 0){
-    		while (delta >= 0 && deformationHautUnitaire(1)){
+    	if(delta > 0 ){
+    		while (delta > 0 && this.getWidth() > 20 && deformationHautUnitaire(1)){
     			delta--;
     		}
     	}
     	else {
-    		while (delta <= 0 && deformationHautUnitaire(-1)){
+    		while (delta < 0 && this.getHeight() > 20 && deformationHautUnitaire(-1)){
     			delta++;
     		}
     	}
@@ -273,12 +273,12 @@ public class Personnage2D extends Rectangle {
     	double delta = this.heightProperty().multiply(ratio).doubleValue() - heightSave;
     	
     	if(delta > 0){
-    		while (delta > 0 && deformationBasUnitaire(1)){
+    		while (delta > 0 && this.getWidth() > 20 && deformationBasUnitaire(1)){
     			delta--;
     		}
     	}
     	else {
-    		while (delta < 0 && deformationBasUnitaire(-1)){
+    		while (delta < 0 && this.getHeight() > 20 && deformationBasUnitaire(-1)){
     			delta++;
     		}
     	}
