@@ -1,11 +1,19 @@
 package models;
 
 import enums.Orientation;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import utils.Settings;
+import utils.Statiques;
 
 public class Mur2D extends Rectangle{
 	
@@ -17,6 +25,9 @@ public class Mur2D extends Rectangle{
 	private final String nom;
 	private Label infos;
 	private Rectangle2D rectangle2D;
+	
+	private DropShadow dropShadow;
+	private Background background;
 	
 	public Mur2D(Orientation orientation, int epaisseur, int position, int debut, int fin, String nom) {
 		
@@ -45,6 +56,59 @@ public class Mur2D extends Rectangle{
 	public String toString(){
 		return String.format("%s :\nposition = %d\ndébut = %d\nfin = %d", this.nom, this.position, this.debut, this.fin);
 	}
+	
+    public void afficheInfos(MouseEvent me, boolean aff){
+		
+		AnchorPane root = Statiques.getRoot();
+	
+		if (aff && Settings.isAffInfosMurs()){
+			infos = this.getInfos(me);
+			infos.setBackground(getBackground());
+			if(! root.getChildren().contains(infos)){
+				root.getChildren().add(infos);	
+			}
+
+			double decalageH = me.getSceneX() < (root.getWidth() - 120) ? 30 : -120;
+			double decalageV = me.getSceneY() < (root.getHeight() - 80) ? 20 : -80;
+			
+			infos.setLayoutX(me.getSceneX() + decalageH);
+			infos.setLayoutY(me.getSceneY() + decalageV);
+			
+			infos.setEffect(getDropShadow());
+			infos.setStyle("-fx-border-color: grey; -fx-border-width: 1; -fx-border-style: solid inside; -fx-border-insets: -5;");
+			
+			this.toFront();
+			this.setStrokeWidth(2);
+			this.setStroke(Color.CORAL);
+			
+		}
+		else {
+			root.getChildren().remove(infos);
+			infos = null;
+			this.setStrokeWidth(0);
+		}
+	}
+    
+    protected DropShadow getDropShadow(){
+    	
+    	if (dropShadow == null){
+
+    		dropShadow = new DropShadow();
+    		dropShadow.setRadius(5.0);
+    		dropShadow.setOffsetX(3.0);
+    		dropShadow.setOffsetY(3.0);	
+    	}
+        return dropShadow;	 	
+    }
+    
+    protected Background getBackground(){
+    	
+    	if (background == null){
+
+    		background = new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-5)));
+    	}
+        return background;	 	
+    }
 	
 	public boolean estEnContact(Rectangle2D r){		
 		return this.rectangle2D.contains(r);	
@@ -87,7 +151,11 @@ public class Mur2D extends Rectangle{
 	}
 
 	public Label getInfos(MouseEvent me) {
-		return new Label(this.toString());
+		
+		if (infos == null){
+			infos = new Label(this.toString());
+		}
+		return infos;
 	}
 
 	public void setInfos(Label infos) {

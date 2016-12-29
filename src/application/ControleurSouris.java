@@ -1,6 +1,7 @@
 package application;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -14,32 +15,30 @@ import utils.Statiques;
 
 public class ControleurSouris {
 	
+	private static DropShadow dropShadow;
+	private static Background background;
+	private static Label infos;
+	
     static public void gerer_sourisBouge(MouseEvent me, boolean aff){
     	
-		if (!Statiques.getMain().isInfosPositionExist()){
-			
-			DropShadow dropShadow = new DropShadow();
-			dropShadow.setRadius(5.0);
-			dropShadow.setOffsetX(3.0);
-			dropShadow.setOffsetY(3.0);
-			dropShadow.setColor(Color.color(0.5, 0.5, 0.5));
-
-			Statiques.getMain().getInfosPosition().setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-5))));
-			Statiques.getRoot().getChildren().add(Statiques.getMain().getInfosPosition());
-
-			Statiques.getMain().getInfosPosition().setEffect(dropShadow);
-			Statiques.getMain().getInfosPosition().setStyle("-fx-border-color: grey; -fx-border-width: 1; -fx-border-style: solid inside; -fx-border-insets: -5;");
-			
-			Statiques.getMain().setInfosPositionExist(true);
+    	infos = getInfos(me);
+    	AnchorPane root = Statiques.getRoot();
+    	
+    	infos.setBackground(getBackground());
+    	if(! root.getChildren().contains(infos)){
+			root.getChildren().add(infos);	
 		}
+
+    	infos.setEffect(getDropShadow());
+    	infos.setStyle("-fx-border-color: grey; -fx-border-width: 1; -fx-border-style: solid inside; -fx-border-insets: -5;");
 		
-		Statiques.getMain().getInfosPosition().setText(String.format("X=%d\nY=%d", (int)me.getSceneX(), (int)me.getSceneY()));
+    	infos.setText(String.format("X=%d\nY=%d", (int)me.getSceneX(), (int)me.getSceneY()));
 		
-		Statiques.getMain().getInfosPosition().setLayoutX(me.getSceneX() -55);
-		Statiques.getMain().getInfosPosition().setLayoutY(me.getSceneY() -45);
+    	infos.setLayoutX(me.getSceneX() -55);
+    	infos.setLayoutY(me.getSceneY() -45);
 		
-		Statiques.getMain().getInfosPosition().setVisible(aff && Settings.isAffPositionSouris());
-		Statiques.getMain().getInfosPosition().toFront();		
+		infos.setVisible(aff && Settings.isAffPositionSouris());
+		infos.toFront();		
 	}
     
 
@@ -50,5 +49,34 @@ public class ControleurSouris {
 		
 		return r;
 		
+	}
+	
+    protected static DropShadow getDropShadow(){
+    	
+    	if (dropShadow == null){
+
+    		dropShadow = new DropShadow();
+    		dropShadow.setRadius(5.0);
+    		dropShadow.setOffsetX(3.0);
+    		dropShadow.setOffsetY(3.0);	
+    	}
+        return dropShadow;	 	
+    }
+    
+    protected static Background getBackground(){
+    	
+    	if (background == null){
+
+    		background = new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-5)));
+    	}
+        return background;	 	
+    }
+    
+    public static Label getInfos(MouseEvent me) {
+		
+		if (infos == null){
+			infos = new Label();
+		}
+		return infos;
 	}
 }

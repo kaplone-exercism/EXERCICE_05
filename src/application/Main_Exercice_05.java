@@ -50,10 +50,6 @@ public class Main_Exercice_05 extends Application implements Initializable{
 	private static Thread tm_launch;
 	private static Thread ts_launch;
 	private static Thread te_launch;
-
-	private Label infos;
-	private Label infosPosition = new Label();
-	private boolean infosPositionExist = false;
 	
 	private AnchorPane fen_scores = null;
 
@@ -94,45 +90,6 @@ public class Main_Exercice_05 extends Application implements Initializable{
 	public void inactive(){
 		Statiques.getRoot().setDisable(true);
 		Statiques.getRoot().setOpacity(0.6);
-	}
-	
-	
-	
-	public void afficheInfos(Mur2D mur, MouseEvent me, boolean aff){
-		
-		AnchorPane root = Statiques.getRoot();
-		
-		DropShadow dropShadow = new DropShadow();
-		dropShadow.setRadius(5.0);
-		dropShadow.setOffsetX(3.0);
-		dropShadow.setOffsetY(3.0);
-		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-
-		
-		if (aff && Settings.isAffInfosMurs()){
-			infos = mur.getInfos(me);
-			infos.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-5))));
-			root.getChildren().add(infos);	
-			
-			double decalageH = me.getSceneX() < (root.getWidth() - 120) ? 30 : -120;
-			double decalageV = me.getSceneY() < (root.getHeight() - 80) ? 20 : -80;
-			
-			infos.setLayoutX(me.getSceneX() + decalageH);
-			infos.setLayoutY(me.getSceneY() + decalageV);
-			
-			infos.setEffect(dropShadow);
-			infos.setStyle("-fx-border-color: grey; -fx-border-width: 1; -fx-border-style: solid inside; -fx-border-insets: -5;");
-			
-			mur.toFront();
-			mur.setStrokeWidth(2);
-			mur.setStroke(Color.CORAL);
-			
-		}
-		else {
-			root.getChildren().remove(infos);
-			infos = null;
-			mur.setStrokeWidth(0);
-		}
 	}
 	
     void afficherSores() {
@@ -181,10 +138,10 @@ public class Main_Exercice_05 extends Application implements Initializable{
 		for (Mur2D mur : Contexte.getNiveau().getListeDesMurs()){
 			mur.setOnMouseEntered(c -> {
 				if (c.isAltDown())
-				afficheInfos(mur, c, true);
+					mur.afficheInfos(c, true);
 			});
 			mur.setOnMouseExited(d -> {
-				afficheInfos(mur, d, false);
+				mur.afficheInfos( d, false);
 			});
 		}
 		
@@ -274,29 +231,5 @@ public class Main_Exercice_05 extends Application implements Initializable{
 		settings.setOnMouseClicked(a -> nouvelleFenetreSettings());
 		exit.setOnMouseClicked(a -> System.exit(0));
 		launch.setOnMouseClicked(a -> nouvelleFenetreNiveaux());	
-	}
-
-	public Label getInfos() {
-		return infos;
-	}
-
-	public void setInfos(Label infos) {
-		this.infos = infos;
-	}
-
-	public Label getInfosPosition() {
-		return infosPosition;
-	}
-
-	public void setInfosPosition(Label infosPosition) {
-		this.infosPosition = infosPosition;
-	}
-
-	public boolean isInfosPositionExist() {
-		return infosPositionExist;
-	}
-
-	public void setInfosPositionExist(boolean infosPositionExist) {
-		this.infosPositionExist = infosPositionExist;
 	}
 }

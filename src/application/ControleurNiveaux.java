@@ -245,6 +245,7 @@ public class ControleurNiveaux{
 		stagePrincipal.setWidth(1005);
 		stagePrincipal.setHeight(635);
 		
+		Statiques.setRoot(root_);
 		Contexte.setNiveau(niveau);
 		niveau.setChronoTask(createWorker());
 
@@ -253,10 +254,10 @@ public class ControleurNiveaux{
 		for (Mur2D mur : niveau.getListeDesMurs()){
 			mur.setOnMouseEntered(c -> {
 				if (c.isAltDown())
-				main.afficheInfos(mur, c, true);
+				mur.afficheInfos(c, true);
 			});
 			mur.setOnMouseExited(d -> {
-				main.afficheInfos(mur, d, false);
+				mur.afficheInfos(d, false);
 			});
 		}
 		
