@@ -75,6 +75,8 @@ public class ControleurClavier {
 				
 				if(t != null && !t.isAlive()){
 					
+					System.out.println("key presed singleton");
+					
 					niveau.getHorloge().getH11c1().textProperty().unbind();
 					niveau.getHorloge().getH11c1().textProperty().bind(niveau.getChronoTask().messageProperty());
 

@@ -3,7 +3,6 @@ package models;
 import enums.Orientation;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-//import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +24,6 @@ public class Mur2D extends Rectangle{
 	private final int fin;
 	private final String nom;
 	private Label infos;
-	//private Rectangle2D rectangle2D;
 	
 	private double decalageH;
 	private double decalageV;
@@ -47,13 +45,6 @@ public class Mur2D extends Rectangle{
 		this.fin = fin;
 		this.nom = nom;
 		this.setFill(Settings.getCouleurMurs());
-		
-//		if(horizontal()){
-//			this.rectangle2D = new Rectangle2D(debut, position, fin - debut, epaisseur);
-//		}
-//		else if(vertical()){
-//			this.rectangle2D = new Rectangle2D(position, debut, epaisseur, fin - debut);
-//		}
 	}
 
 	@Override
@@ -100,10 +91,7 @@ public class Mur2D extends Rectangle{
     	}
         return background;	 	
     }
-	
-//	public boolean estEnContact(Rectangle2D r){		
-//		return this.rectangle2D.contains(r);	
-//	}
+
 	public boolean estEnContact(Bounds r){		
 		return this.getBoundsInLocal().contains(r);	
 	}
@@ -111,10 +99,6 @@ public class Mur2D extends Rectangle{
     public Rectangle getRectangle(){
     	return this;
     }
-    
-//    public Rectangle2D getRectangle2D(){
-//    	return this.rectangle2D;
-//    }
 
 	public Orientation getOrientation() {
 		return orientation;

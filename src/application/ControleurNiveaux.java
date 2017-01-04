@@ -9,11 +9,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import enums.Orientation;
 import enums.Sens;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -53,6 +51,7 @@ public class ControleurNiveaux{
 	private Runnable chrono;
 	private Duration duree;
 	private static Timer timer;
+	private static String tps;
 	
 	public AnchorPane init() {
 		
@@ -223,15 +222,20 @@ public class ControleurNiveaux{
 		Personnage2D r0 = niveau.getPerso();
 		Goal2D g0 = niveau.getGoal2D();
 		
+		ImageView imv = r0.getImv();
+		imv.setImage(new Image("maze_v2.png"));
+		
+		
 		Fleche fb = r0.getFleches().get(Sens.BAS);
 		Fleche fh = r0.getFleches().get(Sens.HAUT);
 		Fleche fd = r0.getFleches().get(Sens.DROITE);
 		Fleche fg = r0.getFleches().get(Sens.GAUCHE);
 
-		root_.getChildren().add(r0);
+		root_.getChildren().addAll(r0, imv);
 		root_.getChildren().addAll(fb, fh, fd, fg, g0);
 		
 		r0.toFront();
+		imv.toFront();
 		fb.toFront();
 		fh.toFront();
 		fd.toFront();
@@ -287,8 +291,10 @@ public class ControleurNiveaux{
             		long secondes = duree.getSeconds() % 60;
             		long minutes = duree.getSeconds() / 60;
             		long dixiemes = ((duree.getNano() / 1000000) % 1000) / 100;
+            		
+            		tps=String.format("%02d:%02d.%d", minutes, secondes, dixiemes);
 
-                    updateMessage(String.format("%02d:%02d.%d", minutes, secondes, dixiemes));
+                    updateMessage(tps);
                     
                     
                 }

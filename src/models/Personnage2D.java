@@ -7,16 +7,18 @@ import java.util.Map;
 import javafx.collections.ObservableList;
 //import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
+import utils.Contexte;
+import utils.Statiques;
 import enums.Sens;
 
 
 public class Personnage2D extends Rectangle {
 
-	//private Rectangle2D rectangle2D;
 	private Niveau niveau;
 	private final double surface;
 	private Map<Sens, Fleche> fleches;
@@ -26,14 +28,24 @@ public class Personnage2D extends Rectangle {
 	private double undoRectangleWidth;
 	private double undoRectangleHeight;
 	
+	private double nouvelleDimension;
+	
+	private ImageView imv;
+	
 	
 	public Personnage2D(double x, double y, double width, double height, Paint fill, Niveau niveau) {
 		super(x, y, width, height);
 		
-		this.setFill(fill);
-//		this.setStroke(Color.GREEN);
-//		this.setStrokeWidth(1);
-		//this.rectangle2D = new Rectangle2D(x, y, width, height);
+		this.imv = new ImageView();
+		
+		this.imv.xProperty().bind(this.xProperty());
+		this.imv.yProperty().bind(this.yProperty());
+		this.imv.fitWidthProperty().bind(this.widthProperty());
+		this.imv.fitHeightProperty().bind(this.heightProperty());
+//	    Statiques.getRoot().getChildren().add(this.imv);
+//	    this.imv.toFront();
+		
+		//this.setFill(fill);
 		this.surface = width * height;
 		
 		fleches = new HashMap<Sens, Fleche>();
@@ -196,8 +208,9 @@ public class Personnage2D extends Rectangle {
     public boolean deformationDroiteUnitaire(int deformation){
     	
     	makeUndoRectangle();
-       	
-    	this.setWidth(Math.round(this.widthProperty().add(deformation).doubleValue())); 
+        nouvelleDimension = Math.round(this.widthProperty().add(deformation).doubleValue());
+    	
+    	this.setWidth(nouvelleDimension); 
     	if (this.getWidth() < 20){
     		this.setWidth(20);	
     		return false;
@@ -351,4 +364,14 @@ public class Personnage2D extends Rectangle {
 		this.setWidth(undoRectangleWidth);
 		this.setHeight(undoRectangleHeight);
 	}
+
+	public ImageView getImv() {
+		return imv;
+	}
+
+	public void setImv(ImageView imv) {
+		this.imv = imv;
+	}
+	
+	
 }
