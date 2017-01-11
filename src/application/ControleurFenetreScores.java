@@ -1,6 +1,8 @@
 package application;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -11,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import utils.Contexte;
+import utils.EchangeAvecServeur;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -51,6 +54,20 @@ public class ControleurFenetreScores extends AnchorPane{
 		vb.getChildren().addAll(bravo,votreTemps, fermer);
 		this.getChildren().add(vb);	
 		
+		EchangeAvecServeur eas = new EchangeAvecServeur();
+		eas.setBody(String.format("%s = %s", Contexte.getNiveau().getNom().toLowerCase(), Contexte.getNiveau().getChronoTask().messageProperty().get()));
+		System.out.println(eas.getAdresse());
+		System.out.println(eas.getBody());
+		System.out.println(eas.getType());
+		String rep = "???";
+		try {
+			rep = eas.reponsePost().get().getResponseBody();
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("terminé + " + rep);
+		
 		fermer.setOnAction(a -> stageScores.fireEvent(new WindowEvent(stageScores, WindowEvent.WINDOW_CLOSE_REQUEST)));
 		
 		Scene SceneScores = new Scene(this, 200, 150);
@@ -58,6 +75,8 @@ public class ControleurFenetreScores extends AnchorPane{
 		stageScores.sizeToScene();
 		stageScores.show();	
 	}
+	
+	
 
 	public int getScore() {
 		return score;
