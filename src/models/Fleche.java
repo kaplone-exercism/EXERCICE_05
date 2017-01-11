@@ -26,6 +26,9 @@ public class Fleche extends ImageView{
 	
 	public void bindAttaches(){
 		
+		this.xProperty().unbind();
+		this.yProperty().unbind();
+		
 		switch(sens){
 		
 		case BAS :
@@ -64,6 +67,10 @@ public class Fleche extends ImageView{
 	}
 
 	public void setOut(boolean out) {
+		
+		this.xProperty().unbind();
+		this.yProperty().unbind();
+		
 		if (out){
 			bindAttaches();
 		}

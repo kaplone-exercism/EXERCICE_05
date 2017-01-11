@@ -38,6 +38,11 @@ public class Personnage2D extends Rectangle {
 		
 		this.imv = new ImageView();
 		
+		this.imv.xProperty().unbind();
+		this.imv.yProperty().unbind();
+		this.imv.fitWidthProperty().unbind();
+		this.imv.fitHeightProperty().unbind();
+		
 		this.imv.xProperty().bind(this.xProperty());
 		this.imv.yProperty().bind(this.yProperty());
 		this.imv.fitWidthProperty().bind(this.widthProperty());
