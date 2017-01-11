@@ -174,13 +174,12 @@ public class Personnage2D extends Rectangle {
     		this.setWidth(Math.round(surface / this.getHeight()));
     		return false;
     	}
+
+    	double widthNew = this.getWidth();
     	
-    	if (enContact()){
-        	readUndoRectangle();
-        	return false;
-        }
-    	
+    	this.setWidth(widthSave);
     	deplacement(- deformation, 0);
+    	this.setWidth(widthNew);
     		
         if (enContact()){
         	readUndoRectangle();
@@ -265,13 +264,13 @@ public class Personnage2D extends Rectangle {
     		this.setHeight(Math.round(surface / this.getWidth()));
     		return false;
     	}
+        
+    	double reequilibrage = heightSave -this.getHeight();
+    	double heightNew = this.getHeight();
     	
-    	if (enContact()){
-        	readUndoRectangle();
-        	return false;
-        }
-	    
-    	deplacement(0, heightSave -this.getHeight());
+    	this.setHeight(heightSave);
+    	deplacement(0, reequilibrage);
+    	this.setHeight(heightNew);
 
         if (enContact()){
         	readUndoRectangle();
